@@ -1,0 +1,21 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: meridyen-postgres
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: meridyen
+      POSTGRES_USER: meridyen
+      POSTGRES_PASSWORD: meridyen_dev_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - meridyen_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  meridyen_postgres_data:
