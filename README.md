@@ -73,7 +73,7 @@ Bu repository, projenin tasarım, yazılım geliştirme, yapay zekâ modeli ve t
 ## Proje Ekibi
 
 
-**MHS OİB TEAM**
+**OİB SETUP**
 
 
 Bursa Otomotiv Lisesi
