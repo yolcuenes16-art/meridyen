@@ -1,19 +1,35 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
-
-:root {
-  font-family: "Inter", Arial, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-}
-
-html,
-body,
-#root {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100%;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: #dedcff;
+  color: #3f38ad;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c9c9d5;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaab9;
 }
