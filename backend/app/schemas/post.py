@@ -15,6 +15,13 @@ class PostCreate(BaseModel):
     content: str = Field(min_length=1, max_length=5000)
     category: str = Field(min_length=2, max_length=50)
     display_name: str | None = Field(default=None, max_length=50)
+    image_url: str | None = Field(default=None)
+
+
+class PostUpdate(BaseModel):
+    content: str | None = Field(default=None, min_length=1, max_length=5000)
+    category: str | None = Field(default=None, min_length=2, max_length=50)
+    image_url: str | None = None
 
 
 class PostResponse(BaseModel):
@@ -23,6 +30,7 @@ class PostResponse(BaseModel):
     display_name: str
     content: str
     category: str
+    image_url: str | None = None
     created_at: datetime
 
     quality_score: float

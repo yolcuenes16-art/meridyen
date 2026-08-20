@@ -11,6 +11,11 @@ body {
 }
 
 ::selection {
-  background: rgba(123, 140, 255, .25);
-  color: #eef1ff;
+  background: rgba(79, 110, 247, 0.2);
+  color: #111827;
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(123, 140, 255, 0.25);
+  color: #f0f2f7;
 }

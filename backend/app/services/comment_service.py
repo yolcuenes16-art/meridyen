@@ -1,49 +1,64 @@
 from datetime import datetime, timezone
 
-from backend.app.schemas.comment import (
-    CommentCreate,
-    CommentResponse,
-)
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from backend.app.db.models import CommentModel, PostModel
+from backend.app.schemas.comment import CommentCreate, CommentResponse
 from backend.app.services.post_service import post_service
 
 
 class CommentService:
     def __init__(self) -> None:
-        self._comments: list[CommentResponse] = []
-        self._next_id = 1
+        pass
 
-    def create_comment(
+    async def create_comment(
         self,
         post_id: int,
         comment: CommentCreate,
+        db: AsyncSession,
     ) -> CommentResponse:
-
-        new_comment = CommentResponse(
-            id=self._next_id,
+        new_comment = CommentModel(
             post_id=post_id,
             username=comment.username,
             content=comment.content,
-            created_at=datetime.now(timezone.utc),
+        )
+        db.add(new_comment)
+        await db.commit()
+        await db.refresh(new_comment)
+
+        count_result = await db.execute(
+            select(func.count(CommentModel.id)).where(CommentModel.post_id == post_id)
+        )
+        count = count_result.scalar()
+        await post_service.set_comment_count(post_id, count, db)
+
+        return CommentResponse(
+            id=new_comment.id,
+            post_id=new_comment.post_id,
+            username=new_comment.username,
+            content=new_comment.content,
+            created_at=new_comment.created_at,
         )
 
-        self._comments.append(new_comment)
-        self._next_id += 1
-        post_service.set_comment_count(
-            post_id,
-            len(self.get_comments(post_id)),
-        )
-
-        return new_comment
-
-    def get_comments(
+    async def get_comments(
         self,
         post_id: int,
+        db: AsyncSession,
     ) -> list[CommentResponse]:
-
+        result = await db.execute(
+            select(CommentModel).where(CommentModel.post_id == post_id)
+        )
+        comments = result.scalars().all()
         return [
-            comment
-            for comment in self._comments
-            if comment.post_id == post_id
+            CommentResponse(
+                id=c.id,
+                post_id=c.post_id,
+                username=c.username,
+                content=c.content,
+                created_at=c.created_at,
+            )
+            for c in comments
         ]
 
 

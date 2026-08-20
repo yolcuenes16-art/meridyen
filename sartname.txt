@@ -1,0 +1,200 @@
+﻿=== PAGE 1 ===
+ 
+ 
+  
+ 
+ 
+ 
+ 
+  
+ 
+  
+  
+  
+NSOSYAL ¦NOVASYON  YARIÌMASI  
+ 
+  
+  
+ 
+   
+GENEL ÌARTNAMES¦  
+  
+  
+  
+2026  
+  
+=== PAGE 2 ===
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ ¦Ã¦NDEK¦LER  
+  
+¦indekiler  
+VERS¦YONLAR ................................ ................................ ................................ ................................ ................................ .... 3 
+1. TANIMLAR ................................ ................................ ................................ ................................ ................................ ... 4 
+1. YARIÌMA AMACI  ................................ ................................ ................................ ................................ .....................  5 
+2. YARIÌMA KAPSAMI  ................................ ................................ ................................ ................................ ................  6 
+¦erik Ekonomisi  ................................ ................................ ................................ ................................ ......................  6 
+Sosyal Yapay ZekÔ  ................................ ................................ ................................ ................................ ..................  7 
+Kullan²c² Kat²l²m² ve Aray³z / Kullan²c² Deneyimi (UI/UX)  ................................ ................................ ....... 7 
+Írnek Ã÷z³m Alanlar²  ................................ ................................ ................................ ................................ ...........  7 
+Beklenen Teslimatlar  ................................ ................................ ................................ ................................ .............  8 
+3. YARIÌMA KATILIM KOÌULLARI ................................ ................................ ................................ ........................  8 
+4. Yar²■ma Takvimi ve Planlama  ................................ ................................ ................................ ............................  9 
+5. PUANLAMA  ................................ ................................ ................................ ................................ ..............................  11 
+6. DEºERLEND¦RME YAKLAÌIMLARI  ................................ ................................ ................................ .................  12 
+7. YARIÌMA VE D EºERLEND¦RME S▄REC¦  ................................ ................................ ................................ .... 12 
+7.1. PROJE TEKN¦K RAPOR TESL¦M S▄REC¦  ................................ ................................ ..............................  12 
+7.2. MENTÍRL▄K VE PROJE GEL¦ÌT¦RME S▄REC¦  ................................ ................................ .................  13 
+7.3. F¦NAL SUNUMLARI  ................................ ................................ ................................ ................................ ..... 13 
+8. ÍD▄LLER VE AVANTAJLAR  ................................ ................................ ................................ ...............................  14 
+9. ¦LET¦Ì¦M  ................................ ................................ ................................ ................................ ................................ ..... 14 
+GENEL KURALLAR  ................................ ................................ ................................ ................................ ..........................  15 
+ET¦K KURALLAR  ................................ ................................ ................................ ................................ ................................  15 
+SORUMLULUK BEYANI  ................................ ................................ ................................ ................................ .................  15 
+ 
+  
+  
+  
+  
+  
+  
+  
+=== PAGE 3 ===
+ 
+ 
+  
+ 
+ 
+ 
+ 
+  
+ 
+ 
+  
+VERS¦YONLAR  
+Tablo 1.  Versiyonlar Tablosu  
+VERS¦YON  TAR¦H  A²klama  
+V1  01.07.2026  ¦lk Versiyon  
+V2  27.07.2026  ¦kinci Versiyon  
+V3 17.08.2026  3.YARIÌMA KATILIM 
+KOÌULLARI  
+4.YARIÌMA TAKV¦M¦  
+ 
+  
+=== PAGE 4 ===
+ 
+ 
+  
+ 
+ 
+ 
+ 
+1. TANIMLAR  
+¦■bu ■artnamede geen terimler a■a­²daki anlamlar² ta■²r:  
+Tan²m  A²klama  
+Yar²■ma  NSosyal ¦novasyon yar²■mas²n² ifade eder.  
+D³zenleyici 
+Kurum  2N MEDYA , T3 VAKFI  
+Yar²■mac²  Yar²■maya tak²m olarak ba■vuran kat²l²mc²y² ifade 
+eder.  
+Tak²m  Yar²■maya ortak proje ile ba■vuran kat²l²mc² grubunu 
+ifade eder.  
+Tak²m Kaptan²  Tak²m² yar²■ma s³resince temsil eden yetkili ki■iyi 
+ifade eder.  
+Proje  Yar²■ma kapsam²nda geli■tirilen ÷zg³n yaz²l²m, sistem, 
+platform veya ÷z³m³ ifade eder.  
+Prototip  Projenin temel fonksiyonlar²n² al²■an ■ekilde g÷steren 
+yaz²l²m veya uygulamay² ifade eder.  
+J³ri  Projeleri de­erlendirmek ³zere g÷revlendirilen uzman 
+kurulunu ifade eder.  
+Ment÷r  Yar²■ma s³recinde teknik ve metodolojik destek 
+sa­layan uzman ki■il eri ifade eder.  
+¦novasyon 
+Dikeyi  Yar²■ma, ¦erik Ekonomisi, Sosyal Yapay ZekÔ  ve 
+Kullan²c² Kat²l²m² & Aray³z/Kullan²c² Deneyimi olmak 
+³zere belirlenen ÷z³m alanlar²n² kapsamaktad²r.  
+¦erik 
+Ekonomisi  ¦erik ³reticilerinin gelir elde etmesini ve ierik ³r etim 
+s³relerini destekleyen teknolojileri kapsayan tema . 
+Sosyal Yapay 
+ZekÔ  Platformu ak²ll² hÔle getiren algoritmalar, toksik ierik 
+y÷netimi ve kullan²c² ruh hÔline uygun ierik ÷nerilerini 
+kapsa yan tema . 
+Kullan²c² 
+Kat²l²m² & 
+Aray³z/Kullan²c
+² Deneyimi  Etkile■imi art²ran mekanikler, oyunla■t²rma ve yeniliki 
+aray³z tasar²mlar² ³zerine yap²lan al²■malar² 
+kapsayan tema . 
+Teslimat  Yar²■ma sonunda sunulacak proje raporu, kaynak kod, 
+sunum dosyas² ve al²■an prototipi ifade eder.  
+ 
+ 
+=== PAGE 5 ===
+ 
+ 
+  
+ 
+ 
+ 
+ 
+1. YARIÌMA AMACI  
+Dijital teknolojilerin h²zla geli■mesiyle birlikte sosyal medya platformlar², bireylerin 
+ileti■im kurma, bilgiye eri■me, ierik ³retme ve toplumsal etkile■im s³relerinin ayr²lmaz 
+bir paras² haline gelmi■tir. G³n³m³zde milyarlarca kullan²c² taraf²ndan aktif olarak 
+kullan²lan sosyal medya ekosistemi; yapay zekÔ teknolojileri, art²r²lm²■ gereklik, b³y³k 
+veri analiti­i, ierik ³retici ekonomisi ve ki■iselle■tirilmi■ kullan²c² deneyimleri gibi birok 
+yeniliki teknolojinin geli■imiyle s³rekli d÷n³■mektedir. Bu d÷n³■³m, yeni nesil sosyal 
+medya platformlar²n²n yaln²zca ileti■im arac² olman²n ÷tesine geerek dijital ekonominin, 
+e­itimin, giri■imcili­in ve toplumsal etkile■imin temel yap² ta■lar²ndan biri haline 
+gelmesini sa­lam aktad²r.  
+ 
+Bununla birlikte sosyal medya teknolojilerinin yayg²nla■mas²; dijital ba­²ml²l²k, yanl²■ bilgi 
+ve dezenformasyonun yay²lmas², veri g³venli­i ve mahremiyet, algoritmik ÷nyarg²lar, 
+kullan²c² refah²n²n korunmas² ve ierik ³reticilerinin s³rd³r³lebilir gelir modellerine 
+eri■imi gibi birok yeni ihtiyac² da beraberinde getirmi■tir. Bu do­rultuda gelece­in sosyal 
+medya platformlar²n²n; g³venilir, ■effaf, etik, eri■ilebilir ve kullan²c² odakl² bir anlay²■la 
+geli■tirilmesi b³y³k  ÷nem ta■²maktad²r.  
+ 
+NSosyal ¦novasyon Yar²■mas² , ³lkemizin sosyal medya teknolojileri alan²ndaki Ar -Ge ve 
+inovasyon kapasitesini art²rmak, bu alanda nitelikli insan kayna­² yeti■mesini 
+desteklemek ve gelece­in dijital platformlar²n² geli■tirecek giri■imci  bireyleri te■vik etmek 
+amac²yla d³zenlenmektedir. Yar²■ma kapsam²nda kat²l²mc²lardan; yapay zekÔ destekli 
+sosyal medya ÷z³mleri, geli■mi■ kullan²c² deneyimi uygulamalar², ierik ³retici 
+ekonomisini g³lendiren modeller, dijital refah² art²ran teknolojile r, g³venli ve etik sosyal 
+medya sistemleri ile toplumsal fayda sa­layan yeniliki platformlar geli■tirmeleri 
+beklenmektedir.  
+ 
+NSosyal ¦novasyon Yar²■mas²; yaln²zca teknik a²dan ba■ar²l² projelerin geli■tirilmesini 
+de­il, ayn² zamanda kullan²c² ihtiyalar² n² merkeze alan, s³rd³r³lebilir i■ modellerine 
+sahip, toplumsal etki olu■turan ve k³resel ÷lekte rekabet edebilecek ³r³nlerin ortaya 
+²kmas²n² hedeflemektedir. Yar²■ma sayesinde ³niversite ÷­rencileri, giri■imciler, 
+yaz²l²m geli■tiriciler, ara■t²rmac²lar ve teknoloji merakl²lar²n²n sosyal medya 
+ekosistemine y÷nelik ÷zg³n fikirler geli■tirmeleri, bu fikirleri uygulanabilir projelere 
+d÷n³■t³rmeleri ve ³lkemizin teknoloji ekosistemine de­er katmalar² amalanmaktad²r.  
+Yeni nesil sosyal medya teknolojilerinin g eli■tirilmesi s³recinde yapay zekÔ, b³y³k veri, 
+÷neri sistemleri, ierik ³retim aralar², dijital g³venlik, ki■isel veri mahremiyeti ve 
+kullan²c² etkile■imini art²ran yeniliki teknolojilerin ³lkemizde geli■tirilmesi stratejik 
+÷nem ta■²maktad²r. Bu kapsamd a NSosyal ¦novasyon Yar²■mas²,  T³rkiye'nin sosyal 
+medya teknolojileri alan²nda yaln²zca kullan²c² de­il, ayn² zamanda teknoloji geli■tiren, 
+yenilik ³reten ve k³resel ÷lekte rekabet eden bir ³lke olma vizyonuna katk² sunmay² 
+hedeflemektedir.  
+python : Traceback (most recent call last):
+At line:1 char:1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 10, in <module>
+  File "C:\Users\yolcu\AppData\Local\Programs\Python\Python312\Lib\encodings\cp1254.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u25cf' in position 81: character maps to <undefined>
+ 
+=== PAGE 6 ===

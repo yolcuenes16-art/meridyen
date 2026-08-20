@@ -1,0 +1,17 @@
+{
+  "n_features": 6310,
+  "analyzer": "char_wb",
+  "ngram_range": [
+    2,
+    5
+  ],
+  "max_features": 8000,
+  "sublinear_tf": true,
+  "model_version": "tfidf-lr-v1",
+  "metrics": {
+    "toxicity_acc": 0.95,
+    "spam_acc": 1.0,
+    "sentiment_acc": 0.95,
+    "mode_acc": 0.575
+  }
+}

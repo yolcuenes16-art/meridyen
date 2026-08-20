@@ -10,6 +10,12 @@ class UserCreate(BaseModel):
     category: str = Field(default="Genel", max_length=50)
 
 
+class UserUpdate(BaseModel):
+    display_name: str | None = Field(default=None, min_length=2, max_length=50)
+    bio: str | None = Field(default=None, max_length=160)
+    category: str | None = Field(default=None, max_length=50)
+
+
 class UserResponse(BaseModel):
     id: int
     username: str

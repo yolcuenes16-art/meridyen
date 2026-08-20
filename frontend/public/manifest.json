@@ -1,0 +1,12 @@
+{
+  "name": "Meridyen - Dijital Denge Platformu",
+  "short_name": "Meridyen",
+  "description": "NSosyal İnovasyon Yarışması Platformu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f23",
+  "theme_color": "#6366f1",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }
+  ]
+}

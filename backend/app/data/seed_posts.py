@@ -1,103 +1,286 @@
-SEED_POSTS = [
+﻿SEED_POSTS = [
+    # --- Egitim ---
     {
         "author_username": "elif_kaya",
         "display_name": "Elif Kaya",
-        "category": "Eğitim",
-        "content": (
-            "Derin çalışma için 25 dakika kesintisiz odak ve 5 dakika nefes molası yeterli. "
-            "Bildirimleri kapatın, tek bir görevi seçin, bitince kısa bir yürüyüş yapın. "
-            "Bu rutin, dikkat dağınıklığını ölçülebilir biçimde azaltır."
-        ),
-    },
-    {
-        "author_username": "kerem_yilmaz",
-        "display_name": "Kerem Yılmaz",
-        "category": "Teknoloji",
-        "content": (
-            "Türkçe eklemeli bir dil olduğu için toksisite tespitinde kök ve ekleri birlikte "
-            "görmek gerekir. Bu nedenle genel amaçlı İngilizce filtreler hakareti kaçırabilir. "
-            "Yerel bir skor motoru, argo ve kısaltmaları da gerekçeli biçimde işaretler."
-        ),
-    },
-    {
-        "author_username": "ayse_demir",
-        "display_name": "Ayşe Demir",
-        "category": "Bilim",
-        "content": (
-            "Doomscrolling neden yorar? Kesintisiz olumsuz uyaran, ödül döngüsünü kısa vadede "
-            "besler ama öz-denetimi zayıflatır. Kullanıcının açıkça seçtiği bir mod, gizli "
-            "duygu çıkarımından daha etik bir sinyaldir."
-        ),
-    },
-    {
-        "author_username": "can_ozkan",
-        "display_name": "Can Özkan",
-        "category": "Sanat",
-        "content": (
-            "Hafta sonu için kısa bir öneri: sahil yürüyüşü, sevdiğiniz bir albüm ve "
-            "telefondan uzak duran bir kahve molası. Keyif de paylaşılabilir; bağırmadan."
-        ),
+        "category": "Egitim",
+        "content": "Derin calisma icin 25 dakika kesintisiz odak ve 5 dakika nefes molasi yeterli. Bildirimleri kapatin, tek bir gorevi secin, bitince kisa bir yuruyus yapin. Bu rutin, dikkat daginikligini olculebilir bicimde azaltir.",
+        "like_count": 12,
+        "comment_count": 3,
     },
     {
         "author_username": "selin_arslan",
         "display_name": "Selin Arslan",
-        "category": "Eğitim",
-        "content": (
-            "Öğrenmeyi kalıcı kılmak için notu kopyalamak yetmez. Kavramı kendi cümlelerinizle "
-            "açıklayın, bir örnek bulun, sonra birine öğretin. Bu üç adım hatırlamayı güçlendirir."
-        ),
+        "category": "Egitim",
+        "content": "Ogrenmeyi kalici kilmak icin notu kopyalamak yetmez. Kavrami kendi cumlelerinizle aciklayin, bir ornek bulun, sonra birine ogretin. Bu uc adim hatirlamayi guclendirir. #egitim #ogrenme",
+        "like_count": 9,
+        "comment_count": 2,
     },
     {
-        "author_username": "mert_kaya",
-        "display_name": "Mert Kaya",
-        "category": "Spor",
-        "content": (
-            "Antrenman sonrası 10 dakikalık esneme, ertesi günkü odak süresini belirgin biçimde "
-            "etkiler. Yoğunluk değil, toparlanma planı sürdürülebilirliği getirir."
-        ),
+        "author_username": "zeynep_ak",
+        "display_name": "Zeynep Aksoy",
+        "category": "Egitim",
+        "content": "TEKNOFESTe katilmak universite ogrencileri icin mukemmel bir deneyim. Yalnizca teknik bilgi degil, ekip calismasi, proje yonetimi ve sunum becerileri de gelistiriliyor. T3 Vakfi ve TEKNOFEST ekibi gercekten gelecegin muhendislerini yetistiriyor.",
+        "like_count": 21,
+        "comment_count": 4,
+    },
+    {
+        "author_username": "elif_kaya",
+        "display_name": "Elif Kaya",
+        "category": "Egitim",
+        "content": "Feynman teknigini deneyin: bir konuyu kucuk bir cocuga anlatabilmelisiniz. Eger takilirsaniz, o noktayi tekrar calisin. Basitlik, gercek anlamanin isaretidir. #teknik #egitim",
+        "image_url": "https://placehold.co/800x400/4F46E5/FFFFFF?text=Feynman+Teknigi",
+        "like_count": 15,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "selin_arslan",
+        "display_name": "Selin Arslan",
+        "category": "Egitim",
+        "content": "Bugun 9. sinif ogrencilerime pomodoro teknigini ogrettim. 25 dakika odaklanip 5 dakika mola vermeyi denediler. Siniftaki sessizlik ve odak seviyesi inanilmaz artti. @elif_kaya bu yontemi sinifinda da deniyor mu?",
+        "like_count": 18,
+        "comment_count": 5,
+    },
+    # --- Teknoloji ---
+    {
+        "author_username": "kerem_yilmaz",
+        "display_name": "Kerem Yilmaz",
+        "category": "Teknoloji",
+        "content": "Turkce eklemeli bir dil oldugu icin toksisite tespitinde kok ve ekleri birlikte gormek gerekir. Bu nedenle genel amaclici Ingilizce filtreler hakareti kacirabilir. Yerel bir skor motoru, argo ve kisaltmalari da gerekceli bicimde isaretler. #teknoloji #nlp",
+        "like_count": 14,
+        "comment_count": 4,
     },
     {
         "author_username": "nisa_polat",
         "display_name": "Nisa Polat",
         "category": "Teknoloji",
-        "content": (
-            "Akış algoritması yalnızca beğeniyi ödüllendirirse kutuplaştırıcı içerik öne çıkar. "
-            "Refah skoru, üreticinin gelir çarpanına bağlanırsa sakin ve doğru içerik de "
-            "ekonomik olarak görünür hale gelir."
-        ),
-    },
-    {
-        "author_username": "baris_tun",
-        "display_name": "Barış Tunç",
-        "category": "Genel",
-        "content": (
-            "Komşu kedi balkona kurulmuş, güneş tam meridyen çizgisinde. Küçük şeyler de "
-            "akışa değer; her paylaşımın bağırarak rekabet etmesi gerekmiyor."
-        ),
+        "content": "Akis algoritmasi yalnizca begeniyi odullendirirse kutuplastirici icerik one cikar. Refah skoru, ureticinin gelir carpanina baglanirsa sakin ve dogru icerik de ekonomik olarak gorunur hale gelir. #teknoloji #sosyalmedya",
+        "like_count": 11,
+        "comment_count": 2,
     },
     {
         "author_username": "berk_yildiz",
-        "display_name": "Berk Yıldız",
+        "display_name": "Berk Yildiz",
         "category": "Teknoloji",
-        "content": (
-            "Bir makine öğrenmesi modeli eğitirken veri kalitesi, model mimarisinden daha "
-            "önemlidir. Kirli veri ile eğitilmiş en sofistike model bile tutarsız sonuçlar verir. "
-            "Bu nedenle veri hazırlığı her zaman ilk adımdır."
-        ),
+        "content": "Bir makine ogrenmesi modeli egitirken veri kalitesi, model mimarisinden daha onemlidir. Kirli veri ile egitilmis en sofistike model bile tutarsiz sonuclar verir. Bu nedenle veri hazirligi her zaman ilk adimdir.",
+        "like_count": 19,
+        "comment_count": 6,
     },
     {
-        "author_username": "spam_net",
-        "display_name": "Fırsat Kanalı",
+        "author_username": "kerem_yilmaz",
+        "display_name": "Kerem Yilmaz",
+        "category": "Teknoloji",
+        "content": "TEKNOFEST bu yil Sanliurfa da duzenleniyor. 30 Eylul - 4 Ekim tarihlerinde birbirinden yenilikci projeler juru karsisina cikacak. Sosyal medya teknolojileri kategorisindeki NSosyal yarismasi ozellikle ilgi cekici; yapay zeka destekli icerik duzenleme ve dijital refah konulari on plana cikiyor.",
+        "image_url": "https://placehold.co/800x400/059669/FFFFFF?text=TEKNOFEST+2026",
+        "like_count": 34,
+        "comment_count": 8,
+    },
+    {
+        "author_username": "nisa_polat",
+        "display_name": "Nisa Polat",
+        "category": "Teknoloji",
+        "content": "Dijital refah uygulamalari son donemde cok populerlestiydi ama cogu sadece ekran suresini kisitliyor. Asil sorun neye zaman harcadigimiz. Kullanicinin kendi hedeflerine gore zaman yonetimi yapabilmesi cok daha degerli. #teknoloji #dijitalrefah",
+        "like_count": 16,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "berk_yildiz",
+        "display_name": "Berk Yildiz",
+        "category": "Teknoloji",
+        "content": "Transformer mimarisiyle calisan bir modeli sifirdan egitmek yerine, mevcut bir modeli Turkce veriyle fine-tune etmek cok daha verimli. Transfer ogrenme, kaynak kisitli projeler icin kritik bir strateji. @kerem_yilmaz bu konuda deneyimlerini paylasabilir mi?",
+        "like_count": 22,
+        "comment_count": 6,
+    },
+    {
+        "author_username": "emre_dogan",
+        "display_name": "Emre Dogan",
+        "category": "Teknoloji",
+        "content": "TEKNOFEST yarismalari ulkemizde AR-GE kulturunun yerlesmesinde cok buyuk rol oynuyor. Lise ogrencilerinden doktora ogrencilerine kadar herkesi ayni cati altinda bulusturmasi cok kiymetli. Gelecek nesil teknoloji girisimcileri bu festivallerde yetisiyor.",
+        "like_count": 27,
+        "comment_count": 5,
+    },
+    # --- Bilim ---
+    {
+        "author_username": "ayse_demir",
+        "display_name": "Ayse Demir",
+        "category": "Bilim",
+        "content": "Doomscrolling neden yorar? Kesintisiz olumsuz uyaran, odul dongusu kisa vadede besler ama oz-denetimi zayiflatir. Kullanicinin acikca sectigi bir mod, gizli duygu cikarimindan daha etik bir sinyaldir.",
+        "like_count": 20,
+        "comment_count": 7,
+    },
+    {
+        "author_username": "ayse_demir",
+        "display_name": "Ayse Demir",
+        "category": "Bilim",
+        "content": "Beynimiz dogal olarak kisa yoldan gider. Derecelendirilmis notlar, renkli etiketler ve kisa aciklamalar beynin hafiza depolama surecini hizlandirir. Bu yuzden duzenli not almak ogrenmeyi %40a kadar guclendirebilir. #bilim #hafiza",
+        "like_count": 13,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "ayse_demir",
+        "display_name": "Ayse Demir",
+        "category": "Bilim",
+        "content": "Sosyal medyada gecirilen sure ile ruh sagligi arasindaki iliski dogrusal degil. Az miktarda sosyal etkilesim refahi artirirken, asiri kullanim olumsuz etkiler dogurur. Toplum sagligi icin denge onemlidir. #bilim #ruhsagligi",
+        "like_count": 25,
+        "comment_count": 4,
+    },
+    # --- Sanat ---
+    {
+        "author_username": "can_ozkan",
+        "display_name": "Can Ozkan",
+        "category": "Sanat",
+        "content": "Hafta sonu icin kisa bir oneri: sahil yuruyusu, sevdiginiz bir album ve telefondan uzak duran bir kahve molasi. Keyif de paylasilabilir; bagirmadan.",
+        "like_count": 17,
+        "comment_count": 2,
+    },
+    {
+        "author_username": "can_ozkan",
+        "display_name": "Can Ozkan",
+        "category": "Sanat",
+        "content": "Dogada fotograf cekerken en onemli sey sabirlidir. Dogru isigi bekleyin, kompozisyonu onceden dusunun ve anin tadini cikarin. Sosyal medya icin degil, kendiniz icin cekebilirsiniz. #sanat #fotograf",
+        "image_url": "https://placehold.co/800x400/B45309/FFFFFF?text=Doga+Fotografciligi",
+        "like_count": 23,
+        "comment_count": 4,
+    },
+    {
+        "author_username": "can_ozkan",
+        "display_name": "Can Ozkan",
+        "category": "Sanat",
+        "content": "Muzik dinlerken bilincli olmak cok farkli bir deneyim. Kulakliginizi takin, gozlerinizi kapatin ve sadece sese odaklanin. 10 dakikalik bu meditasyon, tum gunun stresini azaltir.",
+        "like_count": 14,
+        "comment_count": 1,
+    },
+    # --- Spor ---
+    {
+        "author_username": "mert_kaya",
+        "display_name": "Mert Kaya",
+        "category": "Spor",
+        "content": "Antrenman sonrasi 10 dakikalik esneme, ertesi guneki odak suresini belirgin bicimde etkiler. Yogunluk degil, toparlanma plani surdurulebilirligi getirir.",
+        "like_count": 11,
+        "comment_count": 2,
+    },
+    {
+        "author_username": "mert_kaya",
+        "display_name": "Mert Kaya",
+        "category": "Spor",
+        "content": "Sabah yuruyusu gunun en degerli yatirimidir. 20 dakikalik tempolu bir yuruyus, metabolismayi harekete gecirir, odagi artirir ve gunun geri kalani icin enerji saglar. #spor #saglik",
+        "like_count": 16,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "mert_kaya",
+        "display_name": "Mert Kaya",
+        "category": "Spor",
+        "content": "Duzensiz uyku, antrenman performansini ciddi sekilde dusurur. Kas iyilesmesi ve hafiza konsolidasyonu derin uyku sirasinda gerceklesir. Gunde 7-8 saat kaliteli uyku, herhangi bir egitim programinin temelidir. #spor #uyku #saglik",
+        "like_count": 20,
+        "comment_count": 5,
+    },
+    # --- Genel ---
+    {
+        "author_username": "baris_tun",
+        "display_name": "Baris Tunc",
         "category": "Genel",
-        "content": "BEDAVA KAZAN!!! HEMEN TIKLA İNANILMAZ FIRSAT GARANTİ KAZANÇ DM AT!!!",
+        "content": "Komsumu kedi balkona kurulmus, gunes tam meridyen cizgisinde. Kucuk seyler de akisa deger; her paylasimin bagirarak rekabet etmesi gerekmiyor.",
+        "like_count": 8,
+        "comment_count": 1,
+    },
+    {
+        "author_username": "baris_tun",
+        "display_name": "Baris Tunc",
+        "category": "Genel",
+        "content": "Minimalist yasam demek az hayata sahip olmak degil, gereksiz seylerden kurtulup onemli olanlara zaman ayirmak demektir. Elinizdekilerin kiymetini bilin, daha fazlasini aramak yerine.",
+        "like_count": 12,
+        "comment_count": 2,
+    },
+    {
+        "author_username": "sena_kaya",
+        "display_name": "Sena Kaya",
+        "category": "Genel",
+        "content": "Gecen yil TEKNOFESTte drone yarismasini izlemeye gitmistik, bu yil NSosyal yarismasina projeyle katiliyoruz. Yapay zeka ve sosyal medya bulusmasi cok heyecan verici bir alan. Dijital refahi artirmak icin elimizden geleni yapiyoruz.",
+        "like_count": 19,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "deniz_kara",
+        "display_name": "Deniz Kara",
+        "category": "Genel",
+        "content": "TEKNOFESTin teknoloji yarismalari artik uluslararasi arenada da taniyor. Dunyanin dort bir yanindan gencler Turkiye ye gelip projelerini sunuyor. Ulkemizin teknoloji alanindaki vizyonunu gostermesi acisindan cok onemli bir adim.",
+        "like_count": 15,
+        "comment_count": 4,
+    },
+    # --- Dijital Refah ---
+    {
+        "author_username": "elif_kaya",
+        "display_name": "Elif Kaya",
+        "category": "Egitim",
+        "content": "Telefonunuzu ilk acittiginizda karsilastiginiz ilk ekran sizin gunun belirleyicisi olabilir. Bildirimlerinizi kapatip gunluk planinizi yazarak baslayin. Bu kucuk aliskanlik, buyuk bir fark yaratir. #dijitalrefah #odak",
+        "like_count": 24,
+        "comment_count": 6,
+    },
+    {
+        "author_username": "ayse_demir",
+        "display_name": "Ayse Demir",
+        "category": "Bilim",
+        "content": "Dijital denge sadece ekran suresini azaltmak degil, dijital araclari kendi amacinizla kullanmaktir. Pasif tuketim yerine aktif uretim, bilincleinizi guclendirir. #dijitalrefah #bilim",
+        "like_count": 17,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "baris_tun",
+        "display_name": "Baris Tunc",
+        "category": "Genel",
+        "content": "Her gun 30 dakika telefonunuzu bir kenara birakin ve gercek dunyaya bakin. Dogayi izleyin, kitap okuyun veya bir arkadasinizla yuz yuze konusun. Mutluluk ekranin otekindedir. #dijitalrefah #mutluluk",
+        "like_count": 28,
+        "comment_count": 7,
+    },
+    # --- TEKNOFEST ozel ---
+    {
+        "author_username": "burak_oz",
+        "display_name": "Burak Ozdemir",
+        "category": "Teknoloji",
+        "content": "NSosyal Inovasyon Yarismasi nin en guzel yani, yalnizca teknik basariyi degil toplumsal faydayi da degerlendirme kriterlerine almasi. Icerik uretici ekonomisi, kullanici deneyimi ve sosyal yapay zeka gibi alanlarda gercekten deger ureten projeler ortaya cikiyor.",
+        "like_count": 22,
+        "comment_count": 5,
+    },
+    {
+        "author_username": "aylin_yilmaz",
+        "display_name": "Aylin Yilmaz",
+        "category": "Egitim",
+        "content": "TEKNOFESTin en guclu yonlerinden biri mentorluk sureci. Proje gelistirmenin yani sira alaninda uzman kisilerden geri bildirim almak, final sunumlarina kadar projeyi olgunlastirmak buyuk avantaj. #teknofest #egitim",
+        "like_count": 16,
+        "comment_count": 3,
+    },
+    {
+        "author_username": "murat_aksoy",
+        "display_name": "Murat Aksoy",
+        "category": "Teknoloji",
+        "content": "TEKNOFEST sadece bir yarisma degil, Turkiye nin teknoloji ekosistemine yaptigi yatirim. Kazanan projeler yatirimcilarla bulusturuluyor, mentorluk destegi aliniyor ve hatta kendi girisimlerine donebiliyor. Bole bir platformun olmasi cok degerli.",
+        "like_count": 29,
+        "comment_count": 6,
+    },
+    {
+        "author_username": "gokce_demir",
+        "display_name": "Gokce Demir",
+        "category": "Egitim",
+        "content": "NSosyal yarismasinda juri kriterlerine baktigimda, projenin yalnizca calismasinin degil ayni zamanda etik degerlere uygunlugunun ve kullanici mahremiyetini korumasinin da istendigini goruyorum. Bu yaklasim gelecek nesil teknoloji gelistiricileri icin cok dogru bir mesaj.",
+        "like_count": 13,
+        "comment_count": 2,
+    },
+    # --- Spam ve test ---
+    {
+        "author_username": "spam_net",
+        "display_name": "Firsat Kanali",
+        "category": "Genel",
+        "content": "BEDAVA KAZAN!!! HEMEN TIKLA INANILMAZ FIRSAT GARANTI KAZANC DM AT!!!",
+        "like_count": 0,
+        "comment_count": 0,
     },
     {
         "author_username": "gergin_yorum",
         "display_name": "GerginYorum",
         "category": "Genel",
-        "content": (
-            "Bu insanlar aptal, hepsine hakaret etmek lazım. Nefret dolu bir tehdit ve şiddet "
-            "dili olmadan konuşmayı denemiyorlar."
-        ),
+        "content": "Bu insanlar aptal, hepsine hakaret etmek lazim. Nefret dolu bir tehdit ve siddet dili olmadan konusmayi denemiyorlar.",
+        "like_count": 0,
+        "comment_count": 0,
     },
 ]

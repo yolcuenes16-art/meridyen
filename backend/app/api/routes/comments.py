@@ -1,10 +1,13 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.db.database import get_db
 from backend.app.schemas.comment import (
     CommentCreate,
     CommentResponse,
 )
 from backend.app.services.comment_service import comment_service
+from backend.app.services.notification_service import notify_comment
 from backend.app.services.post_service import post_service
 
 
@@ -22,9 +25,10 @@ router = APIRouter(
 async def create_comment(
     post_id: int,
     comment: CommentCreate,
+    db: AsyncSession = Depends(get_db),
 ) -> CommentResponse:
 
-    post = post_service.get_post(post_id)
+    post = await post_service.get_post(post_id, db)
 
     if post is None:
         raise HTTPException(
@@ -32,10 +36,16 @@ async def create_comment(
             detail="Post not found.",
         )
 
-    return comment_service.create_comment(
+    result = await comment_service.create_comment(
         post_id=post_id,
         comment=comment,
+        db=db,
     )
+
+    if post.author_username.lower() != comment.username.lower():
+        await notify_comment(post.author_username, comment.username, post_id)
+
+    return result
 
 
 @router.get(
@@ -44,9 +54,10 @@ async def create_comment(
 )
 async def get_comments(
     post_id: int,
+    db: AsyncSession = Depends(get_db),
 ) -> list[CommentResponse]:
 
-    post = post_service.get_post(post_id)
+    post = await post_service.get_post(post_id, db)
 
     if post is None:
         raise HTTPException(
@@ -54,4 +65,4 @@ async def get_comments(
             detail="Post not found.",
         )
 
-    return comment_service.get_comments(post_id)
+    return await comment_service.get_comments(post_id, db)
