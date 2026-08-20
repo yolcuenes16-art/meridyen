@@ -29,6 +29,17 @@ Meridyen'in amacı, sosyal medya deneyiminde kullanıcı refahını ve kaliteli 
 
 🚧 **Prototip geliştirme aşamasındadır.**
 
+## Demoyu Çalıştırma
+
+Önce bir kez bağımlılıkları kurun:
+
+```powershell
+python -m pip install -r backend/requirements.txt
+cd frontend; npm install; cd ..
+```
+
+Sonra proje kökünde `./START_DEMO.ps1` çalıştırın. Site `http://localhost:5173`, API dokümantasyonu `http://127.0.0.1:8000/docs` adresindedir.
+
 Bu repository, projenin tasarım, yazılım geliştirme, yapay zekâ modeli ve test süreçlerinin sürüm kontrollü olarak takip edilmesi amacıyla kullanılmaktadır.
 
 ## Teknoloji Planı

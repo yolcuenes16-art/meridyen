@@ -4,6 +4,7 @@ from backend.app.schemas.comment import (
     CommentCreate,
     CommentResponse,
 )
+from backend.app.services.post_service import post_service
 
 
 class CommentService:
@@ -27,6 +28,10 @@ class CommentService:
 
         self._comments.append(new_comment)
         self._next_id += 1
+        post_service.set_comment_count(
+            post_id,
+            len(self.get_comments(post_id)),
+        )
 
         return new_comment
 

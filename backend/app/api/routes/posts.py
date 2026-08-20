@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 
 from backend.app.schemas.post import PostCreate, PostResponse
 from backend.app.services.post_service import post_service
@@ -16,15 +16,20 @@ router = APIRouter(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_post(post: PostCreate) -> PostResponse:
-    return post_service.create_post(post)
+    created = post_service.create_post(post)
+    feed = post_service.get_feed(mode="odak", viewer=post.author_username)
+    return next(item for item in feed if item.id == created.id)
 
 
 @router.get(
     "/feed",
     response_model=list[PostResponse],
 )
-async def get_feed() -> list[PostResponse]:
-    return post_service.get_feed()
+async def get_feed(
+    mode: str = Query(default="odak"),
+    viewer: str | None = Query(default=None),
+) -> list[PostResponse]:
+    return post_service.get_feed(mode=mode, viewer=viewer)
 
 
 @router.get(

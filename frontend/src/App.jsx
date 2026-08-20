@@ -1,662 +1,608 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  createComment,
+  createPost,
+  fetchComments,
+  fetchCreators,
+  fetchFeed,
+  fetchWellbeing,
+  previewAnalysis,
+  toggleLike,
+} from "./api";
 import "./App.css";
 
-const API = "http://127.0.0.1:8000";
-
-const fallbackPosts = [
+const USERNAME = "meridyen_user";
+const MODES = [
   {
-    id: 2,
-    author_username: "meridyen_user",
-    content:
-      "Yapay zeka ile öğrenme süreçlerimizi daha verimli ve bilinçli hale getirebiliriz.",
-    category: "Eğitim",
-    created_at: new Date().toISOString(),
-    quality_score: 90,
-    educational_score: 74,
-    safety_score: 100,
-    spam_score: 0,
-    wellbeing_score: 90.5,
-    overall_score: 88.62,
-    is_publishable: true,
+    id: "odak",
+    label: "Odak",
+    hint: "Sakin, yapılandırılmış, düşük gürültü",
+  },
+  {
+    id: "ogrenme",
+    label: "Öğrenme",
+    hint: "Açıklayıcı ve kavram yoğun içerik",
+  },
+  {
+    id: "eglence",
+    label: "Eğlence",
+    hint: "Hafif, sosyal, toksik olmayan keyif",
   },
 ];
 
+const PAGES = [
+  { id: "akis", label: "Akış" },
+  { id: "denge", label: "Denge raporu" },
+  { id: "uretici", label: "Üretici alanı" },
+];
+
+function formatTime(value) {
+  if (!value) return "Az önce";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Az önce";
+  return date.toLocaleString("tr-TR", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 function App() {
+  const [mode, setMode] = useState("odak");
+  const [page, setPage] = useState("akis");
   const [posts, setPosts] = useState([]);
-  const [activePage, setActivePage] = useState("Ana Sayfa");
-  const [activeCategory, setActiveCategory] = useState("Tümü");
-  const [newPost, setNewPost] = useState("");
-  const [username] = useState("meridyen_user");
+  const [creators, setCreators] = useState([]);
+  const [wellbeing, setWellbeing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [startedAt] = useState(() => Date.now());
+  const [modeSwitches, setModeSwitches] = useState(0);
+  const [sessionMinutes, setSessionMinutes] = useState(0);
 
-  const categories = [
-    { name: "Tümü", icon: "✨" },
-    { name: "Eğitim", icon: "📚" },
-    { name: "Teknoloji", icon: "💻" },
-    { name: "Bilim", icon: "🔬" },
-    { name: "Sanat", icon: "🎨" },
-    { name: "Spor", icon: "⚽" },
-  ];
-
-  useEffect(() => {
-    loadFeed();
-  }, []);
-
-  async function loadFeed() {
+  const load = useCallback(async () => {
     setLoading(true);
-
     try {
-      const response = await fetch(`${API}/api/v1/posts/feed`);
-
-      if (!response.ok) {
-        throw new Error("Feed alınamadı");
-      }
-
-      const data = await response.json();
-      setPosts(Array.isArray(data) ? data : []);
+      const [feed, economy, snapshot] = await Promise.all([
+        fetchFeed(mode, USERNAME),
+        fetchCreators(mode),
+        fetchWellbeing(mode),
+      ]);
+      setPosts(feed);
+      setCreators(economy.creators || []);
+      setWellbeing(snapshot);
     } catch {
-      setPosts(fallbackPosts);
-      setMessage("Demo içerik gösteriliyor.");
+      setMessage("Sunucuya bağlanılamadı. Backend'in çalıştığından emin olun.");
     } finally {
       setLoading(false);
     }
+  }, [mode]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSessionMinutes(Math.max(1, Math.round((Date.now() - startedAt) / 60000)));
+    }, 15000);
+    return () => window.clearInterval(timer);
+  }, [startedAt]);
+
+  function changeMode(next) {
+    if (next === mode) return;
+    setMode(next);
+    setModeSwitches((count) => count + 1);
+    setMessage(`${MODES.find((item) => item.id === next)?.label} moduna geçildi.`);
   }
 
-  async function createPost() {
-    if (!newPost.trim()) return;
-
-    try {
-      const response = await fetch(`${API}/api/v1/posts`, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          author_username: username,
-          content: newPost,
-          category: activeCategory === "Tümü" ? "Genel" : activeCategory,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Gönderi oluşturulamadı");
-      }
-
-      const created = await response.json();
-
-      setPosts((current) => [created, ...current]);
-      setNewPost("");
-      setMessage("Gönderin başarıyla yayınlandı.");
-    } catch {
-      setMessage("Gönderi oluşturulurken bir hata oluştu.");
-    }
-  }
-
-  async function likePost(postId) {
-    try {
-      await fetch(`${API}/api/v1/posts/${postId}/likes`, {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-        }),
-      });
-
-      setMessage("Gönderi beğenildi.");
-    } catch {
-      setMessage("Beğeni işlemi gerçekleştirilemedi.");
-    }
-  }
-
-  const filteredPosts = useMemo(() => {
-    if (activeCategory === "Tümü") return posts;
-
-    return posts.filter((post) => post.category === activeCategory);
-  }, [posts, activeCategory]);
-
-  function formatDate(date) {
-    if (!date) return "Az önce";
-
-    const value = new Date(date);
-
-    if (Number.isNaN(value.getTime())) return "Az önce";
-
-    return value.toLocaleDateString("tr-TR", {
-      day: "numeric",
-      month: "short",
-    });
-  }
+  const currentMode = MODES.find((item) => item.id === mode);
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
+    <div className="shell" data-mode={mode}>
+      <aside className="rail" aria-label="Ana menü">
         <div className="brand">
-          <div className="brand-mark">M</div>
-
+          <img className="brand-mark" src="/meridyen-logo.png" alt="Meridyen" />
           <div>
-            <div className="brand-name">Meridyen</div>
-            <div className="brand-subtitle">Smart Social</div>
+            <p className="brand-kicker">Dijital denge platformu</p>
+            <h1>Meridyen</h1>
           </div>
         </div>
 
-        <nav className="main-nav">
-          <button
-            className={`nav-item ${activePage === "Ana Sayfa" ? "active" : ""}`}
-            onClick={() => setActivePage("Ana Sayfa")}
-          >
-            <span>⌂</span>
-            <span>Ana Sayfa</span>
-          </button>
-
-          <button
-            className={`nav-item ${activePage === "Keşfet" ? "active" : ""}`}
-            onClick={() => setActivePage("Keşfet")}
-          >
-            <span>◉</span>
-            <span>Keşfet</span>
-          </button>
-
-          <button
-            className={`nav-item ${activePage === "Topluluk" ? "active" : ""}`}
-            onClick={() => setActivePage("Topluluk")}
-          >
-            <span>♧</span>
-            <span>Topluluk</span>
-          </button>
-
-          <button
-            className={`nav-item ${activePage === "Bildirimler" ? "active" : ""}`}
-            onClick={() => setActivePage("Bildirimler")}
-          >
-            <span>♢</span>
-            <span>Bildirimler</span>
-            <span className="notification-dot">3</span>
-          </button>
-
-          <button
-            className={`nav-item ${activePage === "Profil" ? "active" : ""}`}
-            onClick={() => setActivePage("Profil")}
-          >
-            <span>○</span>
-            <span>Profil</span>
-          </button>
+        <nav className="rail-nav">
+          {PAGES.map((item) => (
+            <button
+              key={item.id}
+              className={page === item.id ? "nav-btn active" : "nav-btn"}
+              onClick={() => setPage(item.id)}
+              aria-current={page === item.id ? "page" : undefined}
+            >
+              <span className="nav-orb" aria-hidden="true" />
+              {item.label}
+            </button>
+          ))}
         </nav>
 
-        <div className="sidebar-spacer" />
-
-        <div className="wellbeing-card">
-          <div className="wellbeing-top">
-            <span className="wellbeing-icon">🧠</span>
-            <span>Dijital Refah</span>
+        <section className="rail-card" aria-live="polite">
+          <p className="rail-card-label">Akış dengesi</p>
+          <div className="rail-score">
+            <span className="rail-score-value">{wellbeing?.score ?? "—"}</span>
+            <span className="rail-score-unit">/ 100</span>
           </div>
-
-          <div className="wellbeing-score">
-            <strong>87</strong>
-            <span>/ 100</span>
+          <div className="meter">
+            <i style={{ width: `${wellbeing?.score || 0}%` }} />
           </div>
+          <small>
+            {wellbeing?.suppressed_count || 0} içerik filtrelendi
+          </small>
+        </section>
 
-          <div className="progress-track">
-            <div className="progress-fill" style={{ width: "87%" }} />
+        <div className="rail-user">
+          <div className="avatar">E</div>
+          <div>
+            <strong>Enes Yolcu</strong>
+            <span>@{USERNAME}</span>
           </div>
-
-          <p>
-            Bugünkü içerik tüketimin dengeli görünüyor.
-          </p>
-
-          <button
-            onClick={() => setMessage("Dijital refah paneli yakında aktif olacak.")}
-          >
-            Refahımı Gör
-          </button>
-        </div>
-
-        <div className="sidebar-user">
-          <div className="avatar avatar-blue">M</div>
-
-          <div className="user-info">
-            <strong>{username}</strong>
-            <span>Meridyen Kullanıcısı</span>
-          </div>
-
-          <button
-            className="more-button"
-            onClick={() => setMessage("Profil seçenekleri")}
-          >
-            ⋯
-          </button>
         </div>
       </aside>
 
-      <main className="main-content">
-        <header className="topbar">
+      <main className="stage">
+        <div className="topbar">
+          <div className="presence"><i /> Topluluğun için sakin bir alan</div>
+          <div className="topbar-actions">
+            <button type="button" className="icon-btn" aria-label="Bildirimler">⌁</button>
+            <button type="button" className="profile-avatar" aria-label="Profil">E</button>
+          </div>
+        </div>
+        <header className="stage-head">
           <div>
-            <div className="mobile-brand">Meridyen</div>
-            <h1>{activePage}</h1>
-            <p>
-              Güvenli, kaliteli ve bilinçli sosyal deneyim.
+            <p className="eyebrow">Kişiselleştirilmiş deneyim</p>
+            <h2>
+              {page === "akis" && "Akış"}
+              {page === "denge" && "Denge raporu"}
+              {page === "uretici" && "Üretici alanı"}
+            </h2>
+            <p className="lede">
+              Modunu seç; içeriğin güvenliği, faydası ve tonu göre sıralansın.
             </p>
           </div>
 
-          <div className="topbar-actions">
-            <button
-              className="icon-button"
-              onClick={() => setMessage("Arama özelliği yakında aktif olacak.")}
-            >
-              ⌕
-            </button>
-
-            <button
-              className="profile-button"
-              onClick={() => setActivePage("Profil")}
-            >
-              <div className="avatar avatar-blue">M</div>
-              <span>{username}</span>
-              <span>⌄</span>
-            </button>
-          </div>
+          <fieldset className="mode-switch" aria-label="Kullanım modu">
+            <legend>Kullanım modu</legend>
+            {MODES.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={mode === item.id}
+                className={mode === item.id ? "mode-chip on" : "mode-chip"}
+                onClick={() => changeMode(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </fieldset>
         </header>
 
-        <section className="category-bar">
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              className={
-                activeCategory === category.name
-                  ? "category-button selected"
-                  : "category-button"
-              }
-              onClick={() => setActiveCategory(category.name)}
-            >
-              <span>{category.icon}</span>
-              {category.name}
+        <p className="mode-hint" role="status">
+          {currentMode?.hint}
+        </p>
+
+        {message && (
+          <div className="toast" role="status">
+            <span>{message}</span>
+            <button type="button" onClick={() => setMessage("")} aria-label="Kapat">
+              ×
             </button>
-          ))}
-        </section>
+          </div>
+        )}
 
-        <div className="content-grid">
-          <section className="feed-column">
-            {activePage === "Ana Sayfa" || activePage === "Keşfet" ? (
-              <>
-                <section className="composer">
-                  <div className="composer-header">
-                    <div className="avatar avatar-blue">M</div>
+        {page === "akis" && (
+          <FeedView
+            posts={posts}
+            loading={loading}
+            mode={mode}
+            onPosted={load}
+            onMessage={setMessage}
+          />
+        )}
 
-                    <div>
-                      <strong>Ne düşünüyorsun?</strong>
-                      <span>Toplulukla paylaş.</span>
-                    </div>
-                  </div>
+        {page === "denge" && (
+          <BalanceView
+            wellbeing={wellbeing}
+            posts={posts}
+            sessionMinutes={sessionMinutes}
+            modeSwitches={modeSwitches}
+            mode={mode}
+          />
+        )}
 
-                  <textarea
-                    value={newPost}
-                    onChange={(event) => setNewPost(event.target.value)}
-                    placeholder="Meridyen topluluğuyla faydalı bir şey paylaş..."
-                    maxLength={500}
-                  />
-
-                  <div className="composer-footer">
-                    <div className="composer-tools">
-                      <button
-                        onClick={() =>
-                          setMessage("Görsel ekleme özelliği yakında geliyor.")
-                        }
-                      >
-                        🖼️ Görsel
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          setMessage("Kategori seçimi yukarıdaki menüden yapılabilir.")
-                        }
-                      >
-                        # Kategori
-                      </button>
-
-                      <span>{newPost.length}/500</span>
-                    </div>
-
-                    <button
-                      className="publish-button"
-                      disabled={!newPost.trim()}
-                      onClick={createPost}
-                    >
-                      Paylaş
-                    </button>
-                  </div>
-                </section>
-
-                {message && (
-                  <div className="status-message">
-                    <span>✓</span>
-                    {message}
-                    <button onClick={() => setMessage("")}>×</button>
-                  </div>
-                )}
-
-                <div className="feed-heading">
-                  <div>
-                    <h2>
-                      {activeCategory === "Tümü"
-                        ? "Senin Akışın"
-                        : `${activeCategory} Akışı`}
-                    </h2>
-                    <span>Senin için seçilen içerikler</span>
-                  </div>
-
-                  <button
-                    className="sort-button"
-                    onClick={loadFeed}
-                  >
-                    ↻ Yenile
-                  </button>
-                </div>
-
-                {loading ? (
-                  <div className="empty-state">
-                    <div className="loading-circle" />
-                    <h3>Akış hazırlanıyor...</h3>
-                    <p>Meridyen içerikleri getiriliyor.</p>
-                  </div>
-                ) : filteredPosts.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-icon">✦</div>
-                    <h3>Henüz içerik yok</h3>
-                    <p>İlk paylaşımı sen yapabilirsin.</p>
-                  </div>
-                ) : (
-                  <div className="post-list">
-                    {filteredPosts.map((post) => (
-                      <article className="post-card" key={post.id}>
-                        <div className="post-header">
-                          <div className="avatar avatar-purple">
-                            {(post.author_username || "M")[0].toUpperCase()}
-                          </div>
-
-                          <div className="post-author">
-                            <div>
-                              <strong>{post.author_username}</strong>
-
-                              {post.is_publishable && (
-                                <span className="verified">✓</span>
-                              )}
-                            </div>
-
-                            <span>
-                              {formatDate(post.created_at)} · {post.category}
-                            </span>
-                          </div>
-
-                          <button
-                            className="post-more"
-                            onClick={() =>
-                              setMessage("Gönderi seçenekleri yakında aktif.")
-                            }
-                          >
-                            ⋯
-                          </button>
-                        </div>
-
-                        <p className="post-content">{post.content}</p>
-
-                        <div className="analysis-panel">
-                          <div className="analysis-title">
-                            <span>✦ Meridyen İçerik Analizi</span>
-                            <strong>{post.overall_score ?? 0}/100</strong>
-                          </div>
-
-                          <div className="analysis-bars">
-                            <ScoreBar
-                              label="Kalite"
-                              value={post.quality_score}
-                            />
-                            <ScoreBar
-                              label="Eğiticilik"
-                              value={post.educational_score}
-                            />
-                            <ScoreBar
-                              label="Güvenlik"
-                              value={post.safety_score}
-                            />
-                            <ScoreBar
-                              label="Refah"
-                              value={post.wellbeing_score}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="post-actions">
-                          <button onClick={() => likePost(post.id)}>
-                            ♡ <span>Beğen</span>
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setMessage("Yorum alanı yakında aktif olacak.")
-                            }
-                          >
-                            ◌ <span>Yorum</span>
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setMessage("Paylaşım özelliği yakında aktif olacak.")
-                            }
-                          >
-                            ↗ <span>Paylaş</span>
-                          </button>
-
-                          <button
-                            className="save-action"
-                            onClick={() =>
-                              setMessage("İçerik kaydedildi.")
-                            }
-                          >
-                            ♧
-                          </button>
-                        </div>
-                      </article>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <PagePlaceholder
-                page={activePage}
-                onAction={() => setActivePage("Ana Sayfa")}
-              />
-            )}
-          </section>
-
-          <aside className="right-column">
-            <section className="smart-card">
-              <div className="smart-card-header">
-                <div className="smart-icon">✦</div>
-
-                <div>
-                  <strong>Meridyen AI</strong>
-                  <span>Akıllı içerik asistanı</span>
-                </div>
-              </div>
-
-              <h3>Bugün senin için</h3>
-
-              <p>
-                İlgi alanlarına göre daha kaliteli ve dengeli içerikler
-                keşfetmeye hazır mısın?
-              </p>
-
-              <button
-                onClick={() => setActivePage("Keşfet")}
-              >
-                Keşfetmeye Başla <span>→</span>
-              </button>
-            </section>
-
-            <section className="side-card">
-              <div className="side-card-title">
-                <h3>Trend Konular</h3>
-                <button
-                  onClick={() => setMessage("Tüm trendler yakında.")}
-                >
-                  Tümü
-                </button>
-              </div>
-
-              <Trend
-                number="01"
-                title="Yapay Zeka"
-                posts="1.284 gönderi"
-              />
-
-              <Trend
-                number="02"
-                title="Teknoloji"
-                posts="932 gönderi"
-              />
-
-              <Trend
-                number="03"
-                title="Eğitim"
-                posts="748 gönderi"
-              />
-
-              <Trend
-                number="04"
-                title="Dijital Refah"
-                posts="421 gönderi"
-              />
-            </section>
-
-            <section className="side-card people-card">
-              <div className="side-card-title">
-                <h3>Önerilenler</h3>
-                <button
-                  onClick={() => setMessage("Öneriler yenilendi.")}
-                >
-                  Yenile
-                </button>
-              </div>
-
-              <Person
-                letter="A"
-                name="Ayşe Demir"
-                username="@aysedemir"
-              />
-
-              <Person
-                letter="K"
-                name="Kerem Yılmaz"
-                username="@keremy"
-              />
-
-              <Person
-                letter="E"
-                name="Elif Kaya"
-                username="@elifkaya"
-              />
-            </section>
-
-            <footer className="footer-links">
-              <span>Meridyen</span>
-              <span>Güvenlik</span>
-              <span>Topluluk</span>
-              <span>Hakkımızda</span>
-              <small>© 2026 Meridyen</small>
-            </footer>
-          </aside>
-        </div>
+        {page === "uretici" && (
+          <CreatorView creators={creators} mode={mode} />
+        )}
       </main>
     </div>
   );
 }
 
-function ScoreBar({ label, value = 0 }) {
-  const safeValue = Math.max(0, Math.min(100, Number(value) || 0));
-
+function FeedView({ posts, loading, mode, onPosted, onMessage }) {
   return (
-    <div className="score-item">
-      <div>
-        <span>{label}</span>
-        <strong>{Math.round(safeValue)}</strong>
-      </div>
+    <div className="layout">
+      <section>
+        <Composer mode={mode} onPosted={onPosted} onMessage={onMessage} />
+        <div className="feed-heading">
+          <div>
+            <span className="feed-label">Akış</span>
+            <h3>Önerilen içerikler</h3>
+          </div>
+          <span className="live-dot"><i /> Güncelleme</span>
+        </div>
+        {loading ? (
+          <div className="panel empty">İçerikler yükleniyor…</div>
+        ) : (
+          <ol className="feed">
+            {posts.map((post, index) => (
+              <PostCard
+                key={`${post.id}-${mode}`}
+                post={post}
+                rank={index + 1}
+                mode={mode}
+                onMessage={onMessage}
+              />
+            ))}
+          </ol>
+        )}
+      </section>
 
-      <div className="score-track">
-        <div
-          className="score-fill"
-          style={{ width: `${safeValue}%` }}
-        />
-      </div>
+      <aside className="side">
+        <article className="panel">
+          <h3>Nasıl çalışır?</h3>
+          <ul>
+            <li>Seçtiğin mod, akışını biçimlendirir.</li>
+            <li>Güvenlik ve fayda öncelikli sıralama.</li>
+            <li>Her önerinin gerekçesi şeffaf.</li>
+          </ul>
+        </article>
+        <article className="panel">
+          <h3>Gizlilik ilkesi</h3>
+          <ul>
+            <li>Duygu tahmini yapılmaz; kontrol sende.</li>
+            <li>Verilerin yalnızca senin deneyimini iyileştirir.</li>
+            <li>İçerik tercihlerin üçüncü kişilerle paylaşılmaz.</li>
+          </ul>
+        </article>
+      </aside>
     </div>
   );
 }
 
-function Trend({ number, title, posts }) {
+function Composer({ mode, onPosted, onMessage }) {
+  const [text, setText] = useState("");
+  const [category, setCategory] = useState("Eğitim");
+  const [preview, setPreview] = useState(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (text.trim().length < 8) {
+      setPreview(null);
+      return undefined;
+    }
+
+    const handle = window.setTimeout(async () => {
+      try {
+        const result = await previewAnalysis({
+          title: text.slice(0, 80),
+          description: text,
+          category,
+          mode,
+        });
+        setPreview(result);
+      } catch {
+        setPreview(null);
+      }
+    }, 350);
+
+    return () => window.clearTimeout(handle);
+  }, [text, category, mode]);
+
+  async function publish() {
+    if (!text.trim()) return;
+    setBusy(true);
+    try {
+      const created = await createPost({
+        author_username: USERNAME,
+        display_name: "Enes Yolcu",
+        content: text,
+        category,
+      });
+      setText("");
+      onPosted();
+      if (!created.is_publishable) {
+        onMessage("İçerik alındı; güvenlik filtresi nedeniyle görünürlüğü kısıtlandı.");
+      } else {
+        onMessage("İçerik yayınlandı.");
+      }
+    } catch (error) {
+      onMessage(error.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
-    <div className="trend-item">
-      <span className="trend-number">{number}</span>
-
-      <div>
-        <strong>#{title}</strong>
-        <span>{posts}</span>
+    <section className="panel composer">
+      <label htmlFor="composer-input">Düşüncelerini paylaş</label>
+      <textarea
+        id="composer-input"
+        value={text}
+        maxLength={500}
+        onChange={(event) => setText(event.target.value)}
+        placeholder="Bir fikir, keşip ya da kısa bir not bırak…"
+      />
+      <div className="composer-bar">
+        <select
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+          aria-label="Kategori"
+        >
+          {["Eğitim", "Teknoloji", "Bilim", "Sanat", "Spor", "Genel"].map((item) => (
+            <option key={item}>{item}</option>
+          ))}
+        </select>
+        <span>{text.length}/500</span>
+        <button type="button" disabled={!text.trim() || busy} onClick={publish}>
+          Paylaş
+        </button>
       </div>
+      {preview && (
+        <div className="preview-bar" aria-live="polite">
+          <PreviewBadge label="Güvenlik" value={preview.analysis.safety_score} />
+          <PreviewBadge label="Fayda" value={preview.analysis.wellbeing_score} />
+          <PreviewBadge label="Sıralama" value={preview.ranking.rank_score} />
+        </div>
+      )}
+    </section>
+  );
+}
 
-      <span className="trend-arrow">↗</span>
+function PreviewBadge({ label, value }) {
+  const v = Number(value || 0);
+  let tone = "badge-ok";
+  if (v < 40) tone = "badge-warn";
+  else if (v < 65) tone = "badge-mid";
+  return (
+    <span className={`preview-badge ${tone}`}>
+      {label} <strong>{Math.round(v)}</strong>
+    </span>
+  );
+}
+
+function PostCard({ post, rank: _rank, mode, onMessage }) {
+  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [liked, setLiked] = useState(post.liked_by_me);
+  const [likeCount, setLikeCount] = useState(post.like_count);
+
+  async function onLike() {
+    try {
+      const result = await toggleLike(post.id, USERNAME);
+      setLiked(result.liked);
+      setLikeCount(result.like_count);
+    } catch (error) {
+      onMessage(error.message);
+    }
+  }
+
+  async function onToggleComments() {
+    const next = !open;
+    setOpen(next);
+    if (next) {
+      try {
+        setComments(await fetchComments(post.id));
+      } catch (error) {
+        onMessage(error.message);
+      }
+    }
+  }
+
+  async function sendComment() {
+    if (!commentText.trim()) return;
+    try {
+      const created = await createComment(post.id, USERNAME, commentText);
+      setComments((current) => [...current, created]);
+      setCommentText("");
+    } catch (error) {
+      onMessage(error.message);
+    }
+  }
+
+  const modeFit = mode === "odak"
+    ? post.focus_fit
+    : mode === "ogrenme"
+      ? post.learn_fit
+      : post.fun_fit;
+
+  return (
+    <li className={post.is_publishable ? "card" : "card dimmed"}>
+      <article>
+        <header>
+          <div className="avatar">{post.display_name[0]}</div>
+          <div className="card-meta">
+            <strong>{post.display_name}</strong>
+            <span>
+              @{post.author_username} · {formatTime(post.created_at)} · {post.category}
+            </span>
+          </div>
+          <div className="card-fit-badge">
+            <span className="fit-value">{Math.round(modeFit)}</span>
+            <span className="fit-label">uyum</span>
+          </div>
+        </header>
+        <p>{post.content}</p>
+        {post.moderation_note && (
+          <p className="warn">{post.moderation_note}</p>
+        )}
+        <dl className="score-chips">
+          <div className="chip">
+            <dt>Denge</dt>
+            <dd>
+              <span className="chip-bar">
+                <i style={{ width: `${Math.min(post.wellbeing_score, 100)}%` }} />
+              </span>
+              <span className="chip-val">{Math.round(post.wellbeing_score)}</span>
+            </dd>
+          </div>
+          <div className="chip">
+            <dt>Güvenlik</dt>
+            <dd>
+              <span className="chip-bar">
+                <i style={{ width: `${Math.min(post.safety_score, 100)}%` }} />
+              </span>
+              <span className="chip-val">{Math.round(post.safety_score)}</span>
+            </dd>
+          </div>
+          <div className="chip">
+            <dt>Erişim</dt>
+            <dd>
+              <span className="chip-val">×{post.visibility_multiplier.toFixed(2)}</span>
+            </dd>
+          </div>
+        </dl>
+        <details>
+          <summary>Neden önerildi?</summary>
+          <ul className="reason-list">
+            {post.rank_reasons.map((reason) => (
+              <li key={reason}>{reason}</li>
+            ))}
+          </ul>
+        </details>
+        <footer>
+          <button type="button" aria-pressed={liked} className={liked ? "liked" : ""} onClick={onLike}>
+            {liked ? "Beğenildi" : "Beğen"} · {likeCount}
+          </button>
+          <button type="button" onClick={onToggleComments}>
+            Yorum · {post.comment_count}
+          </button>
+        </footer>
+        {open && (
+          <div className="comments">
+            {comments.map((comment) => (
+              <p key={comment.id}>
+                <strong>@{comment.username}</strong> {comment.content}
+              </p>
+            ))}
+            <div className="comment-form">
+              <input
+                value={commentText}
+                onChange={(event) => setCommentText(event.target.value)}
+                placeholder="Yorum ekle"
+                aria-label="Yorum"
+              />
+              <button type="button" onClick={sendComment}>
+                Gönder
+              </button>
+            </div>
+          </div>
+        )}
+      </article>
+    </li>
+  );
+}
+
+function BalanceView({ wellbeing, posts, sessionMinutes, modeSwitches, mode }) {
+  const top = posts.slice(0, 3);
+  const toxicShare = posts.length
+    ? Math.round(
+        (posts.filter((item) => item.safety_score < 70).length / posts.length) * 100
+      )
+    : 0;
+
+  return (
+    <div className="stat-grid">
+      <article className="panel stat">
+        <span className="stat-label">Ortalama denge</span>
+        <strong className="stat-value">{wellbeing?.avg_wellbeing ?? 0}</strong>
+      </article>
+      <article className="panel stat">
+        <span className="stat-label">Güvenli içerik</span>
+        <strong className="stat-value">%{wellbeing?.safe_ratio ?? 0}</strong>
+      </article>
+      <article className="panel stat">
+        <span className="stat-label">Oturum</span>
+        <strong className="stat-value">{sessionMinutes || "<1"} dk</strong>
+      </article>
+      <article className="panel stat">
+        <span className="stat-label">Mod değişimi</span>
+        <strong className="stat-value">{modeSwitches}</strong>
+      </article>
+      <article className="panel span-2">
+        <h3>Bu modda öne çıkanlar</h3>
+        <p>
+          Aktif mod: <strong>{mode}</strong> · Düşük güvenli içerik oranı %{toxicShare}.
+        </p>
+        <ol>
+          {top.map((post) => (
+            <li key={post.id}>
+              {post.display_name} — {post.rank_score.toFixed(1)} · denge{" "}
+              {Math.round(post.wellbeing_score)}
+            </li>
+          ))}
+        </ol>
+      </article>
     </div>
   );
 }
 
-function Person({ letter, name, username }) {
-  return (
-    <div className="person-item">
-      <div className="avatar avatar-green">{letter}</div>
-
-      <div className="person-info">
-        <strong>{name}</strong>
-        <span>{username}</span>
-      </div>
-
-      <button>Takip</button>
-    </div>
-  );
-}
-
-function PagePlaceholder({ page, onAction }) {
-  const content = {
-    Topluluk: {
-      icon: "♧",
-      title: "Topluluklar",
-      text: "İlgi alanlarına göre topluluklar burada olacak.",
-    },
-    Bildirimler: {
-      icon: "♢",
-      title: "Bildirimler",
-      text: "Etkileşimlerin ve önemli güncellemelerin burada görünecek.",
-    },
-    Profil: {
-      icon: "○",
-      title: "Profil",
-      text: "Kişisel profil, gönderiler ve dijital refah istatistiklerin burada olacak.",
-    },
-  };
-
-  const item = content[page] || {
-    icon: "◉",
-    title: page,
-    text: "Bu bölüm hazırlanıyor.",
-  };
+function CreatorView({ creators }) {
+  const mine = creators.find((item) => item.author_username === USERNAME);
 
   return (
-    <div className="placeholder">
-      <div className="placeholder-icon">{item.icon}</div>
-      <h2>{item.title}</h2>
-      <p>{item.text}</p>
-
-      <button onClick={onAction}>Ana Sayfaya Dön</button>
+    <div className="layout">
+      <section className="panel">
+        <h3>Haftalık gelir havuzu</h3>
+        <p>
+          Pay, görünürlük çarpanı ve refah skoruna göre dağıtılır.
+        </p>
+        {mine && (
+          <p className="mine">
+            Tahmini payınız: <strong>{mine.estimated_weekly_share} TL</strong>
+          </p>
+        )}
+        <table className="board">
+          <thead>
+            <tr>
+              <th>Üretici</th>
+              <th>Refah</th>
+              <th>Çarpan</th>
+              <th>Pay</th>
+            </tr>
+          </thead>
+          <tbody>
+            {creators.map((creator) => (
+              <tr
+                key={creator.author_username}
+                className={
+                  creator.author_username === USERNAME ? "is-me" : undefined
+                }
+              >
+                <td>{creator.display_name}</td>
+                <td>{creator.avg_wellbeing}</td>
+                <td>×{creator.avg_multiplier.toFixed(2)}</td>
+                <td>{creator.estimated_weekly_share} TL</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+      <aside className="side">
+        <article className="panel">
+          <h3>Dağıtım mantığı</h3>
+          <p>
+            Kaliteli ve güvenli içerik daha fazla görünürlük kazanır.
+            Tekil beğeni yerine bütüncül skorlama kullanılır.
+          </p>
+        </article>
+      </aside>
     </div>
   );
 }

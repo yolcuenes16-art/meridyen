@@ -27,3 +27,4 @@ class UserPreferences(BaseModel):
     preferred_categories: list[str] = Field(default_factory=list)
     wellbeing_mode: bool = True
     safe_content: bool = True
+    usage_mode: str = "odak"

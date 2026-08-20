@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     app_name: str = "Meridyen API"
-    app_version: str = "0.1.0"
+    app_version: str = "0.2.0"
     debug: bool = True
     database_url: str = "postgresql+asyncpg://meridyen:meridyen@localhost:5432/meridyen"
 
